@@ -9,8 +9,8 @@ version="1.0-20201124"
 #==========CONFIGURATION==========
 
 prefix = '*' #What prefix does Floodgates use to denote a Bedrock player?
-chestshopdir = '/home/pj/burgKurgTest/plugins/ChestShop' #Chestshop directory, excluding any files
-essentialsxdir = '/home/pj/burgKurgTest/plugins/Essentials' #EssentialsX directory, excluding any files
+chestshopdir = '/home/pj/server/plugins/ChestShop' #Chestshop directory, excluding any files
+essentialsxdir = '/home/pj/server/plugins/Essentials' #EssentialsX directory, excluding any files
 
 #=================================
 
