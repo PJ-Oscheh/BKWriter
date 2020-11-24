@@ -4,13 +4,24 @@
 
 import sqlite3
 import os
+import ftplib
+import pathlib
+Path = pathlib.Path
 version="1.0-20201124"
 
 #==========CONFIGURATION==========
 
 prefix = '*' #What prefix does Floodgates use to denote a Bedrock player?
-chestshopdir = '/home/pj/server/plugins/ChestShop' #Chestshop directory, excluding any files
-essentialsxdir = '/home/pj/server/plugins/Essentials' #EssentialsX directory, excluding any files
+chestshopdir = '/home/you/server/plugins/ChestShop' #Chestshop directory, excluding any files
+essentialsxdir = '/home/you/server/plugins/Essentials' #EssentialsX directory, excluding any files
+
+enable_ftp = False #Whether to enable FTP. For servers hosted by a company, you'll probably need to use this.
+ftp_address = 'my.server.com' #FTP Address Here.
+ftp_username = 'username' #FTP login
+ftp_password = 'password' #FTP password
+
+#If you're using FTP, make sure your chestshopdir and essentialsxdir are set to your LOCAL working directory!
+#BKWriter will mirror your folder setup in this folder.
 
 #=================================
 
@@ -27,7 +38,39 @@ def exportdb(db,newData):
     c.execute("INSERT into accounts VALUES(?,?,?,?)",newData)
     conn.commit()
 
+def useftp(option,fileName,i=0):
+    fileName = Path(fileName)
+    if option=='DOWNLOAD':
+        print(f'Downloading {fileName}...')
+        with ftplib.FTP(ftp_address,ftp_username,ftp_password) as ftp, open(fileName,'wb') as file:
+            ftp.retrbinary(f"RETR {file.name}",file.write)
+    elif option=='UPLOAD':
+        print(f'Uploading {fileName}...')
+        with ftplib.FTP(ftp_address,ftp_username,ftp_password) as ftp, open(fileName,'rb') as file:
+            ftp.storbinary(f"STOR {file.name}",file)
+    elif option =='COUNT':
+        with ftplib.FTP(ftp_address,ftp_username,ftp_password) as ftp:
+            return len(ftp.nlst(str(fileName)))
+    elif option =='GET_FILE_NAME':
+        with ftplib.FTP(ftp_address,ftp_username,ftp_password) as ftp:
+            return ftp.nlst(str(fileName))[i]
+
 def chestShop():
+    if enable_ftp==True:
+        if os.path.isdir(chestshopdir) ==False:
+            print(f"ERROR: {chestshopdir} doesn't exist!\nPlease be sure to create all subfolders as well (as this function has not yet been implemented).")
+            exit()
+        if os.path.isdir(essentialsxdir) ==False:
+            print(f"ERROR: {essentialsxdir} doesn't exist!\nPlease be sure to create all subfolders as well (as this function has not yet been implemented).")
+            exit()
+        if os.path.isdir(f'{essentialsxdir}/userdata') ==False:
+            print(f"ERROR: {essentialsxdir}/userdata doesn't exist!\nPlease be sure to create all subfolders as well (as this function has not yet been implemented).")
+            exit()
+        useftp('DOWNLOAD','plugins/ChestShop/users.db')
+        userFiles = useftp('COUNT','plugins/Essentials/userdata')
+        for i in range(0,userFiles):
+            essentials_uuid = useftp('GET_FILE_NAME','plugins/Essentials/userdata',i)
+            useftp('DOWNLOAD',f'plugins/Essentials/userdata/{essentials_uuid}')
     usersdb = importdb(f'{chestshopdir}/users.db') #Open users.db from ChestShop as a list
     eUserData = os.listdir(f'{essentialsxdir}/userdata') #Directory with EssentialsX userdata files
 
@@ -62,4 +105,10 @@ def chestShop():
 print(f"BKWriter version {version}\n")
 
 #Add functions here, if you desire more data to be written
+
+
 chestShop()
+
+#Files to reupload to FTP Server
+if enable_ftp==True:
+    useftp('UPLOAD',Path('plugins/ChestShop/users.db'))
