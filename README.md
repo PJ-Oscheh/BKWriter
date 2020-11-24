@@ -6,6 +6,7 @@ This is a simple script that manually adds any Bedrock players to Chestshop's us
 I designed this for my own server, Burg Kurg (hence the "BK"), but it may be used on any server!
 
 Requires Chestshop*
+
 Requires EssentialsX**
 
 \* The code can theoretically be adapted for any other plugin. If the target plugin uses a setup identical to Chestshop's, you can just change the Chestshop's directory in the Configuration
