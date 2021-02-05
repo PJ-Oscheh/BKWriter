@@ -6,19 +6,21 @@ import sqlite3
 import os
 import ftplib
 import pathlib
+import time
 Path = pathlib.Path
-version="1.0-20201124"
+version="1.0-20210205"
 
 #==========CONFIGURATION==========
 
 prefix = '*' #What prefix does Floodgates use to denote a Bedrock player?
-chestshopdir = '/home/you/server/plugins/ChestShop' #Chestshop directory, excluding any files
-essentialsxdir = '/home/you/server/plugins/Essentials' #EssentialsX directory, excluding any files
+chestshopdir = '/home/pj/BK Scripts/plugins/ChestShop' #Chestshop directory, excluding any files
+essentialsxdir = '/home/pj/BK Scripts/plugins/Essentials' #EssentialsX directory, excluding any files
+slptime = 2 #How long should the script wait before downloading another EssentialsX profile? (May be needed to avoid a timeout!)
 
-enable_ftp = False #Whether to enable FTP. For servers hosted by a company, you'll probably need to use this.
-ftp_address = 'my.server.com' #FTP Address Here.
-ftp_username = 'username' #FTP login
-ftp_password = 'password' #FTP password
+enable_ftp = True #Whether to enable FTP. For servers hosted by a company, you'll probably need to use this.
+ftp_address = 'bhs-adv4-36.server.pro'#FTP Address Here.
+ftp_username = '40727' #FTP login
+ftp_password = 'IJx2QEodBikWbt0' #FTP password
 
 #If you're using FTP, make sure your chestshopdir and essentialsxdir are set to your LOCAL working directory!
 #BKWriter will mirror your folder setup in this folder.
@@ -70,6 +72,7 @@ def chestShop():
         userFiles = useftp('COUNT','plugins/Essentials/userdata')
         for i in range(0,userFiles):
             essentials_uuid = useftp('GET_FILE_NAME','plugins/Essentials/userdata',i)
+            time.sleep(slptime)
             useftp('DOWNLOAD',f'plugins/Essentials/userdata/{essentials_uuid}')
     usersdb = importdb(f'{chestshopdir}/users.db') #Open users.db from ChestShop as a list
     eUserData = os.listdir(f'{essentialsxdir}/userdata') #Directory with EssentialsX userdata files
@@ -112,3 +115,4 @@ chestShop()
 #Files to reupload to FTP Server
 if enable_ftp==True:
     useftp('UPLOAD',Path('plugins/ChestShop/users.db'))
+print('Done!')
