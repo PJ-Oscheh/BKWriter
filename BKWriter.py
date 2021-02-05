@@ -17,10 +17,10 @@ chestshopdir = '/home/pj/BK Scripts/plugins/ChestShop' #Chestshop directory, exc
 essentialsxdir = '/home/pj/BK Scripts/plugins/Essentials' #EssentialsX directory, excluding any files
 slptime = 2 #How long should the script wait before downloading another EssentialsX profile? (May be needed to avoid a timeout!)
 
-enable_ftp = True #Whether to enable FTP. For servers hosted by a company, you'll probably need to use this.
-ftp_address = 'bhs-adv4-36.server.pro'#FTP Address Here.
-ftp_username = '40727' #FTP login
-ftp_password = 'IJx2QEodBikWbt0' #FTP password
+enable_ftp = False #Whether to enable FTP. For servers hosted by a company, you'll probably need to use this.
+ftp_address = 'address'#FTP Address Here.
+ftp_username = 'username' #FTP login
+ftp_password = 'password' #FTP password
 
 #If you're using FTP, make sure your chestshopdir and essentialsxdir are set to your LOCAL working directory!
 #BKWriter will mirror your folder setup in this folder.
