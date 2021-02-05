@@ -13,8 +13,8 @@ version="1.0-20210205"
 #==========CONFIGURATION==========
 
 prefix = '*' #What prefix does Floodgates use to denote a Bedrock player?
-chestshopdir = '/home/pj/BK Scripts/plugins/ChestShop' #Chestshop directory, excluding any files
-essentialsxdir = '/home/pj/BK Scripts/plugins/Essentials' #EssentialsX directory, excluding any files
+chestshopdir = '/home/you/BK Scripts/plugins/ChestShop' #Chestshop directory, excluding any files
+essentialsxdir = '/home/you/BK Scripts/plugins/Essentials' #EssentialsX directory, excluding any files
 slptime = 2 #How long should the script wait before downloading another EssentialsX profile? (May be needed to avoid a timeout!)
 
 enable_ftp = False #Whether to enable FTP. For servers hosted by a company, you'll probably need to use this.
